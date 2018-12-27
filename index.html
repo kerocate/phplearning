@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/foundation/5.5.3/css/foundation.min.css">
+        <link rel="stylesheet" href="./css/mystyle.css">
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/foundation/5.5.3/js/foundation.min.js"></script>
+        <script src="https://cdn.staticfile.org/foundation/5.5.3/js/vendor/modernizr.js"></script>
+    </head>
+
+    <body>
+
+        <div class="row" style="margin-top: 20px;">
+            <div class="medium-12 columns">
+              <div class="panel">
+                <h1>喵喵留言板！</h1>
+                <textarea rows="12" id="Message" placeholder="有什么想说的呢~~告诉我吧www"></textarea>
+                <button type="button" id="1" class="button small info M_button"> 写 </button>
+                <button type="button" id="2" data-reveal-id="myModal" class="button small info M_button"> 改 </button>
+                <div id="myModal" class="reveal-modal" data-reveal>
+                        <h2>哎呀！让我再改改qwq。</h2>
+                        <textarea rows="12" id="Messagec"></textarea>
+                        <button type="button" id="4" data-reveal-id="success" class="button small info M_button"> 真香 </button>
+                        <a class="close-reveal-modal">&times;</a>
+                      </div>
+                <div id="success" class="reveal-modal" data-reveal>
+                    <p>马上就改好！</p>
+                </div>
+                <button type="button" id="3" class="button small info M_button"> 删 </button>
+                <p id="backsomeh"></p>
+                <p id="backsomef"></p>
+              </div>
+            </div>
+          </div>
+          
+
+
+
+    </body>
+
+<script>
+
+        $(document).ready(function() {
+            $(document).foundation();
+        })
+
+        $(document).ready(function(){
+
+            $.get("./test.php?b=1",function(data,status){
+                $("#backsomeh").html(data);
+                });
+
+            $("#1").click(function(){
+                $.get("./test.php?c="
+                + $("#Message").val()
+                + "&a=1"
+                + "&b=1" ,function(data,status){ 
+                //多个变量传参应该用&链接不要忘记了！
+                    $("#backsomeh").html(data);
+                });
+            });
+
+            $("#2").click(function(){
+                $("#Messagec").val($("#Message").val());
+            });
+
+            $("#4").click(function(){
+                $.get("./test.php?c="
+                + $("#Messagec").val()
+                + "&b=" + $("#Message").val()
+                + "&a=2"
+                    ,function(data,status){
+                    $("#backsomeh").html(data);
+                    $("#Message").val($("#Messagec").val());
+                });
+            });
+
+            $("#3").click(function(){
+                $.get("./test.php?c="
+                + $("#Message").val()
+                + "&a=3"
+                + "&b=1",function(data,status){
+                    $("#backsomeh").html(data);
+                });
+            });
+        });
+
+</script>
+<!-- function getmy(css) {
+    return document.querySelector(css);
+    }
+
+function getsome() {
+    if (getmy("#Message").value.length==0)
+    { 
+        getmy("#backsome").innerHTML="";
+        return;
+    }
+    //下面是ajax的对象声明逻辑
+    let ajax;
+    ajax=new XMLHttpRequest();
+    //下面是ajax的状态检测逻辑
+    ajax.onload = function(){
+        if(ajax.status == 200)
+        {
+            //下面是ajax的返回沟通逻辑
+            getmy("#backsome").innerHTML = ajax.responsText;
+        }
+    //下面是ajax的发送沟通逻辑
+    ajax.open("GET", "./test.php?q="+getmy("#Message").value ,true);
+    ajax.send();
+    }
+} -->
+
+</html>
